@@ -10,17 +10,26 @@ class Network:
 
     def get_capacity(self, e) -> int:
         '''Gets the capacity for all edges'''
+        capacity = self.capacity
+        inv = inv_edge(e)
+        
+        if e in capacity:
+            return capacity[e]
+        elif inv in capacity:
+            return -capacity[inv]
+        else:
+            return 0
+
+    def add_verts(self, elements):
+        self.vertices.update(elements)
+
+    def add_edges(self, elements):
+        self.edges.update(elements)
 
 
 def inv_edge(e):
     edge_list = list(e)
     return (edge_list[1], edge_list[0])
-
-def add_verts(v, elements):
-    v.update(elements)
-
-def add_edges(e, elements):
-    e.update(elements)
 
 
 # test
@@ -29,8 +38,8 @@ net = Network()
 v = net.vertices
 e = net.edges
 
-add_verts(v, [2, 3, 4])
-add_edges(e, [(2, 3), (3, 2), (2, 4)])
+net.add_verts([2, 3, 4])
+net.add_edges([(2, 3), (3, 2), (2, 4)])
 
 inv_e = inv_edge((2, 3))
 
