@@ -31,17 +31,27 @@ def find_path_depth_first(network: Network, current_path: list[int] = []) -> lis
     """
     Finds a path from source to sink quickly, but which is not optimized. Using this in ford-fulkerson achieves the original complexity
     """
+    # Start with just the source
     if current_path == []:
         current_path = [network.source]
+
     vertex = current_path[-1]
+
+    # If the sink has been reached, return the path taken
     if vertex == network.sink:
         return current_path
+
+    # For each edge going out from this node, call the function again if the edge is not already in the path
     for edge in network.edges:
         if edge[0] == vertex and edge[1] not in current_path:
             next_path = current_path + [edge[1]]
             sink_path = find_path_depth_first(network, next_path)
+
+            # If a path is returned, terminate and return that path
             if sink_path:
                 return sink_path
+
+    # If none of the outgoing edges returned succesful paths, return None
     return None
 
 def residual_network(network: Network, flow: dict) -> Network:
@@ -96,6 +106,9 @@ def augment_path(flow: dict, path: list[int], amount: int) -> dict:
 def ford_fulkerson(network: Network) -> dict:
     """
     The Ford-fulkerson algorithm for computing the max flow in a network
+
+    Takes flow graph as input, so a graph G = (V, E) and a flow capacity c. We also need a start and a finish, so a source node s and "sink" node t
+    Returns flow with maximum capacity from s to t, which is a sequence
     """
     # Start by assuming all flow i zero
     flow = {e: 0 for e in network.edges}
