@@ -27,6 +27,23 @@ def find_shortest_path(network: Network) -> list[int]:
                 if next not in visited:
                     neighbors.append((next, next_path))
 
+def find_path_depth_first(network: Network, current_path: list[int] = []) -> list[int]:
+    """
+    Finds a path from source to sink quickly, but which is not optimized. Using this in ford-fulkerson achieves the original complexity
+    """
+    if current_path == []:
+        current_path = [network.source]
+    vertex = current_path[-1]
+    if vertex == network.sink:
+        return current_path
+    for edge in network.edges:
+        if edge[0] == vertex and edge[1] not in current_path:
+            next_path = current_path + [edge[1]]
+            sink_path = find_path_depth_first(network, next_path)
+            if sink_path:
+                return sink_path
+    return None
+
 def residual_network(network: Network, flow: dict) -> Network:
     """
     Takes a network and a valid flow through the network, and computes the corresponding residual network
@@ -76,6 +93,31 @@ def augment_path(flow: dict, path: list[int], amount: int) -> dict:
             augmented_flow[inv_edge(edge)] -= amount
     return augmented_flow
 
+def ford_fulkerson(network: Network) -> dict:
+    """
+    The Ford-fulkerson algorithm for computing the max flow in a network
+    """
+    # Start by assuming all flow i zero
+    flow = {e: 0 for e in network.edges}
+
+    while True:
+        # Find the residual network
+        residual = residual_network(network, flow)
+
+        # Find a path in the residual network
+        augmenting_path = find_path_depth_first(residual)
+
+        # If no augmenting path exists, stop
+        if augmenting_path == None:
+            break
+
+        # Find value which the path can be augmented by
+        augmenting_value = path_min_capacity(residual, augmenting_path)
+
+        # Augment the flow along the path by the value
+        flow = augment_path(flow, augmenting_path, augmenting_value)
+    return flow
+
 def edmonds_karp(network: Network) -> dict:
     """
     The Edmonds-Karp algorithm for computing the max flow in a network
@@ -115,5 +157,5 @@ if __name__ == "__main__":
         (3,4): 3
     }
 
-    flow = edmonds_karp(net)
+    flow = ff(net)
     print(flow)
