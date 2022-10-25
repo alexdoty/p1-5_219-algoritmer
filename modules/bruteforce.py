@@ -4,11 +4,19 @@ def powerset(base_set: set) -> list[set]:
     """
     Calculates the power set of a set recursively 
     """
+    # The powerset of the empty is just a list of the empty set
     if base_set == set():
         return [set()]
+
     copied_set = base_set.copy()
+
+    # Pick an element from the set and remove it
     element = copied_set.pop()
+
+    # Find the powerset of the remaining set
     sub_powerset = powerset(copied_set)
+
+    # The total powerset is the union of the powerset without the element, and that powerset but with the element added to each set
     return sub_powerset + [subset | {element} for subset in sub_powerset]
 
 def brute_force_max_flow(network: Network) -> int:
@@ -19,16 +27,22 @@ def brute_force_max_flow(network: Network) -> int:
     s = network.source
     t = network.sink
 
+    # Get all sets of verticies containing the source vertex and not the sink. These represent cuts
     source_partitions = [{s} | subset for subset in powerset(network.vertices - {s, t})]
 
+    # Assume that the minimum cut capacity is infinity
     min_cut_capacity = 999999999999999999999999999999999999999
 
     for source_partition in source_partitions:
         sink_partition = network.vertices - source_partition
         cut_capacity = 0
+
+        #Calculate the cut capacity by summing all flow from the source partition to the sink partition
         for v in source_partition:
             for u in sink_partition:
                 cut_capacity += network.get_capacity((v,u))
+
+        # If the capacity is less than the current minimum, update the minimum
         if cut_capacity < min_cut_capacity:
             min_cut_capacity = cut_capacity
     return min_cut_capacity
