@@ -33,14 +33,15 @@ def brute_force_max_flow(network: Network) -> int:
             min_cut_capacity = cut_capacity
     return min_cut_capacity
 
-net = Network()
+if __name__ == "__main__":
+    net = Network()
 
-net.source = 1
-net.sink = 4
+    net.source = 1
+    net.sink = 4
 
-net.add_verts([1, 2, 3, 4])
-net.add_edges([(net.source, 2), (2, net.sink), (net.source , 3), (3, net.sink)])
+    net.add_verts([1, 2, 3, 4])
+    net.add_edges([(net.source, 2), (2, net.sink), (net.source , 3), (3, net.sink)])
 
-net.capacity = {(net.source, 2): 3, (2, net.sink): 4, (net.source , 3): 4, (3, net.sink): 2}
+    net.capacity = {(net.source, 2): 3, (2, net.sink): 4, (net.source , 3): 4, (3, net.sink): 2}
 
-print(brute_force_max_flow(net))
+    print(brute_force_max_flow(net))
