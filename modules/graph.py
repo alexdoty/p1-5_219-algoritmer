@@ -1,19 +1,6 @@
 # Module for creating networks :)
 from __future__ import annotations
-import csv
-from re import S
-
-class csv_thing:
-    def __init__(self, data):
-        tmp = parse_data(data)
-        self.rows = tmp[0]
-        self.cols = tmp[1]
-    
-    def __str__(self):
-        return "{}, {}".format(self.rows, self.cols)
-    
-    def get(self, x, y):
-        return self.cols[self.rows[y]][x]
+from csv_class import *
 
 class Network:
     def __init__(self) -> None:
@@ -50,30 +37,19 @@ class Network:
                 flow_value += self.get_capacity(edge)
         return flow_value
 
-def parse_csv(csv_file):
-    with open(csv_file) as f:
-        graph = csv.reader(f)
-        
-        for i in graph:
-            print(i)
-
-def parse_data(data):
-    rows = {}
-    cols = {}
-    for count, item in enumerate(data[0][1:].split(",")):
-        rows.update({ count : item[0] })
-    for column in data[1:]:
-        raw = column.split(",")
-        cols.update({ column[0][0] : list(map(int, raw[1:])) })
-    return [rows, cols]
-
 def inv_edge(e):
     edge_list = list(e)
     return (edge_list[1], edge_list[0])
 
 # test
 
-parse_csv('example_graph.csv')
+b = parse_csv('example_graph.csv')
+c = csv_thing(b)
+
+for i in c:
+    print(c.get(3, i))
+
+
 
 # net = Network()
 
