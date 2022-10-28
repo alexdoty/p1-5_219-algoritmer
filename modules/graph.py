@@ -16,6 +16,7 @@ def make_capacity(csv):
 
 
 class Network:
+    '''Class that defines a network from a given csv file'''
     def __init__(self, filename):
         self.filename = filename
         self.csv_file = csv_parser(filename)
@@ -31,13 +32,31 @@ class Network:
         self.sink = 0
 
     def __str__(self):
-        return "capacity: {}\nvertices: {}\nedges: {}\nsource: {}\nsink: {}".format(
-            self.capacity, self.vertices, self.edges, self.source, self.sink
-        )
+        return f'capacity: {self.capacity}\nvertices: {self.vertices}\nedges: {self.edges}\nsource: {self.source}\nsink: {self.sink}'
+
+    def add_edges(self, list_edges):
+        self.edges.update(list_edges)
+
+    def add_vertices(self, list_vertices):
+        self.vertices.update(list_vertices)
+
+    def get_capacity(self, e) -> int:
+        '''Gets the capacity for all edges'''
+        capacity = self.capacity
+        inv = inv_edge(e)
+        
+        if e in capacity:
+            return capacity[e]
+        elif inv in capacity:
+            return -capacity[inv]
+        else:
+            return 0
 
 def inv_edge(e):
     edge_list = list(e)
     return (edge_list[1], edge_list[0])
 
-graph = Network('graphs/demon_graph.csv')
-print(graph)
+net = Network("graphs/wiki_graph.csv")
+
+
+print(net)

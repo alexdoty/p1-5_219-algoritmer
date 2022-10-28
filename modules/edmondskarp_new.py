@@ -1,5 +1,4 @@
-# from graph import Network, inv_edge
-from graph_old import Network, inv_edge
+from graph import Network, inv_edge
 
 def find_shortest_path(network: Network) -> list[int]:
     """
@@ -60,7 +59,7 @@ def residual_network(network: Network, flow: dict) -> Network:
     Takes a network and a valid flow through the network, and computes the corresponding residual network
     """
     # Create a new network with the same vertices
-    residual = Network()
+    residual = Network("graphs/empty_graph.csv")
     residual.vertices = network.vertices.copy()
     residual.source = network.source
     residual.sink = network.sink
@@ -158,19 +157,9 @@ def edmonds_karp(network: Network) -> dict:
     return flow
 
 if __name__ == "__main__":
-    net = Network()
-    
-    net.add_verts([1,2,3,4])
-    net.add_edges([(1,2), (1,3), (2, 3), (2,4), (3,4)])
-    net.source = 1
-    net.sink = 4
-    net.capacity = {
-        (1,2): 2,
-        (1,3): 3,
-        (2,3): 1,
-        (2,4): 3,
-        (3,4): 3
-    }
+    net = Network("graphs/wiki_graph.csv")
 
-    flow = ford_fulkerson(net)
+    print(net)
+
+    flow = edmonds_karp(net)
     print(flow)
