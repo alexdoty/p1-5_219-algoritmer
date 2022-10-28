@@ -1,4 +1,5 @@
-from graph import Network, inv_edge
+# from graph import Network, inv_edge
+from graph_old import Network, inv_edge
 
 def find_shortest_path(network: Network) -> list[int]:
     """
@@ -157,7 +158,9 @@ def edmonds_karp(network: Network) -> dict:
     return flow
 
 if __name__ == "__main__":
+    # net = Network("graphs/wiki_graph.csv")
     net = Network()
+    
     net.add_verts([1,2,3,4])
     net.add_edges([(1,2), (1,3), (2, 3), (2,4), (3,4)])
     net.source = 1
@@ -170,5 +173,5 @@ if __name__ == "__main__":
         (3,4): 3
     }
 
-    flow = ff(net)
+    flow = ford_fulkerson(net)
     print(flow)
