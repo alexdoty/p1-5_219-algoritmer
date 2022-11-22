@@ -70,18 +70,19 @@ def inv_edge(e):
     edge_list = list(e)
     return (edge_list[1], edge_list[0])
 
-# test
+if __name__ == '__main__':
+    # test
 
 
-net = Network.from_csv("graphs/wiki_graph.csv")
-print(net.capacity)
+    net = Network.from_csv("graphs/wiki_graph.csv")
+    print(net.capacity)
 
-# v = net.vertices
-# e = net.edges
+    # v = net.vertices
+    # e = net.edges
 
-# net.add_verts([2, 3, 4])
-# net.add_edges([(2, 3), (3, 2), (2, 4)])
+    # net.add_verts([2, 3, 4])
+    # net.add_edges([(2, 3), (3, 2), (2, 4)])
 
-# inv_e = inv_edge((2, 3))
+    # inv_e = inv_edge((2, 3))
 
 
