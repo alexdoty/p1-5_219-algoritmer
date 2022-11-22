@@ -1,4 +1,4 @@
-from graph import Network
+from graph_old import Network
 
 def powerset(base_set: set) -> list[set]:
     """
@@ -48,14 +48,14 @@ def brute_force_max_flow(network: Network) -> int:
     return min_cut_capacity
 
 if __name__ == "__main__":
-    net = Network()
+    net = Network.from_csv("graphs/wiki_graph.csv")
 
-    net.source = 1
-    net.sink = 4
+    #net.source = 1
+    #net.sink = 4
 
-    net.add_verts([1, 2, 3, 4])
-    net.add_edges([(net.source, 2), (2, net.sink), (net.source , 3), (3, net.sink)])
+    #net.add_verts([1, 2, 3, 4])
+    #net.add_edges([(net.source, 2), (2, net.sink), (net.source , 3), (3, net.sink)])
 
-    net.capacity = {(net.source, 2): 3, (2, net.sink): 4, (net.source , 3): 4, (3, net.sink): 2}
+    #net.capacity = {(net.source, 2): 3, (2, net.sink): 4, (net.source , 3): 4, (3, net.sink): 2}
 
     print(brute_force_max_flow(net))
