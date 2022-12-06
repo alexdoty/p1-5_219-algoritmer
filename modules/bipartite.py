@@ -11,6 +11,6 @@ def network_from_bipartite(X, Y, E):
     return net
 
 if __name__ == "__main__":
-    n = network_from_bipartite({1,2,3},{4,5,6},{(1,4),(1,5),(2,4),(3,6)})
+    n = network_from_bipartite({1,2,3},{4,5,6},{(1,4),(1,5),(2,4),(3,6),(2,6)})
     print(n.capacity)
     print(edmonds_karp(n))

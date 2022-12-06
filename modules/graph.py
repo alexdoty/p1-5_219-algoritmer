@@ -1,44 +1,44 @@
-from csv_parser import *
+# Module for creating networks :)
+from __future__ import annotations
+# from csv_class import *
 
-def make_capacity(csv):
-    data = csv.retrieve_internals()
-    rows = data[0]
-    cols = data[1]
-
-    capacity = dict()
-
-    for key, value in rows.items():
-        for count, node in enumerate(cols[value]):
-            if node != 0:
-                capacity.update({ (value, rows[count]) : node })
-
-    return capacity
-
+def vertex_int(v):
+    if v == 's':
+        return 0
+    elif v == 't':
+        return -1
+    elif v == '':
+        return 
+    return int(v)
 
 class Network:
-    '''Class that defines a network from a given csv file'''
-    def __init__(self, filename):
-        self.filename = filename
-        self.csv_file = csv_parser(filename)
-        self.capacity = make_capacity(self.csv_file)
-
+    def __init__(self) -> None:
         self.vertices = set()
-        self.edges = list()
-        for key, value in self.capacity.items():
-            self.edges.append(key)
-            self.vertices.add(value)
+        self.edges = set()
+        self.capacity = {}
+        self.source = None
+        self.sink = None
 
-        self.source = max(self.vertices) + 1
-        self.sink = 0
-
-    def __str__(self):
-        return f'capacity: {self.capacity}\nvertices: {self.vertices}\nedges: {self.edges}\nsource: {self.source}\nsink: {self.sink}'
-
-    def add_edges(self, list_edges):
-        self.edges.update(list_edges)
-
-    def add_vertices(self, list_vertices):
-        self.vertices.update(list_vertices)
+    @classmethod
+    def from_csv(cls, filename):
+        net = Network()
+        lines = []
+        with open(filename) as f:
+            for line in f:
+                print(line)
+                lines.append(list(map(vertex_int, line.split(','))))
+        for line in lines[1:]:
+            A = line[0]
+            net.vertices.add(A)
+            for i in range(1, len(line)):
+                val = int(line[i])
+                if val != 0:
+                    B = lines[0][i]
+                    net.edges.add((A,B))
+                    net.capacity[(A,B)] = val
+        net.source = 0
+        net.sink = -1
+        return net
 
     def get_capacity(self, e) -> int:
         '''Gets the capacity for all edges'''
@@ -52,11 +52,37 @@ class Network:
         else:
             return 0
 
+    def add_verts(self, elements):
+        self.vertices.update(elements)
+
+    def add_edges(self, elements):
+        self.edges.update(elements)
+
+    def get_flow_value(self, flow) -> int:
+        flow_value = 0
+
+        for edge in flow:
+            if edge[1] == self.sink:
+                flow_value += self.get_capacity(edge)
+        return flow_value
+
 def inv_edge(e):
     edge_list = list(e)
     return (edge_list[1], edge_list[0])
 
-net = Network("graphs/wiki_graph.csv")
+if __name__ == '__main__':
+    # test
 
 
-print(net)
+    net = Network.from_csv("graphs/wiki_graph.csv")
+    print(net.capacity)
+
+    # v = net.vertices
+    # e = net.edges
+
+    # net.add_verts([2, 3, 4])
+    # net.add_edges([(2, 3), (3, 2), (2, 4)])
+
+    # inv_e = inv_edge((2, 3))
+
+

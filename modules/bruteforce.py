@@ -1,4 +1,4 @@
-from graph_old import Network
+from graph import Network
 
 def powerset(base_set: set) -> list[set]:
     """

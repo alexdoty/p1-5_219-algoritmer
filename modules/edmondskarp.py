@@ -1,5 +1,5 @@
 # from graph import Network, inv_edge
-from graph_old import Network, inv_edge
+from graph import Network, inv_edge
 
 def find_shortest_path(network: Network) -> list[int]:
     """
